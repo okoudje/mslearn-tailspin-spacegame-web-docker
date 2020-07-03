@@ -101,5 +101,5 @@ stages:
           inputs:
             appName: $(webAppName)
             azureSubscription: 'space-game-acr-azurerm-connection'
-            imageName: $(RegistryName)/$(webrepository):$(build.buildId)
+            imageName: $(registryName)/$(webrepository):$(build.buildId)
 
