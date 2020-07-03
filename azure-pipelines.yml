@@ -4,6 +4,8 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   webrepository: web
+  azureSub: space-game-acr-azurerm-connection
+  imagename: $(registryName)/web:$(build.buildId)
 
 stages:
 # - stage: 'Build'
@@ -78,10 +80,10 @@ stages:
           displayName: 'Build and Publish image'
           inputs:
             command: buildAndPush
-            containerRegistry: 'Container registry service connection'
+            containerRegistry: 'Container-registry-service-connection'
             buildContext: $(Build.Repository.LocalPath)
             repository: $(webrepository)
-            tags: '$(Build.BuildId)'
+            tags: $(Build.BuildId)
             Dockerfile: $(Build.SourcesDirectory)/Tailspin.SpaceGame.Web/Dockerfile #  '**/Dockerfile'
 
 
@@ -100,6 +102,6 @@ stages:
           displayName: 'Deploy to azure web app container'
           inputs:
             appName: $(webAppName)
-            azureSubscription: 'space-game-acr-azurerm-connection'
-            imageName: $(registryName)/$(webrepository):$(build.buildId)
+            azureSubscription: $(azureSub)
+            imageName: $(imagename)
 
