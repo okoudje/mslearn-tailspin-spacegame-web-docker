@@ -75,7 +75,7 @@ stages:
         vmImage: 'ubuntu-18.04'
       steps:
         - task: Docker@2
-          displayName: Login to ACR
+          displayName: 'Build and Publish image'
           inputs:
             command: buildAndPush
             containerRegistry: 'Container registry service connection'
@@ -84,29 +84,6 @@ stages:
             tags: '$(Build.BuildId)'
             Dockerfile: $(Build.SourcesDirectory)/Tailspin.SpaceGame.Web/Dockerfile #  '**/Dockerfile'
 
-# - stage: 'Deploy'
-#   displayName: 'Deploy the web application'
-#   dependsOn: Build
-#   jobs:
-#   - deployment: Deploy
-#     pool:
-#       vmImage: 'ubuntu-18.04'
-#     environment: spike
-#     variables:
-#     - group: Release
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - download: current
-#             artifact: drop
-#           - task: AzureWebApp@1
-#             displayName: 'Azure App Service Deploy: website'
-#             inputs:
-#               azureSubscription: 'Resource Manager - Tailspin - Space Game'
-#               appName: '$(WebAppName)'
-#               appType: webAppLinux
-#               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Tailspin.SpaceGame.Web.zip'
 
 - stage: 'DeployContainer'
   displayName: 'Deploy the container'
