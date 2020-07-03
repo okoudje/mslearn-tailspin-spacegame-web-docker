@@ -5,7 +5,7 @@ variables:
   buildConfiguration: 'Release'
   webrepository: web
   azureSub: space-game-acr-azurerm-connection
-  imagename: $(registryName)/web:$(build.buildId)
+  imagename: $(registryName)/$(webrepository):$(build.buildId)
 
 stages:
 # - stage: 'Build'
@@ -83,7 +83,7 @@ stages:
             containerRegistry: 'Container-registry-service-connection'
             buildContext: $(Build.Repository.LocalPath)
             repository: $(webrepository)
-            tags: $(Build.BuildId)
+            tags: $(build.buildId)
             Dockerfile: $(Build.SourcesDirectory)/Tailspin.SpaceGame.Web/Dockerfile #  '**/Dockerfile'
 
 
@@ -98,8 +98,7 @@ stages:
       variables:
         - group: Release
       steps:
-        - task: AzureWebAppContainer@1
-          displayName: 'Deploy to azure web app container'
+        - task: AzureWebAppContainer@1          
           inputs:
             appName: $(webAppName)
             azureSubscription: $(azureSub)
